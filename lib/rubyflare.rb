@@ -14,7 +14,7 @@ module Rubyflare
     end
   end
 
-  def self.connect_with(email, api_key)
-    Rubyflare::Connect.new(email, api_key)
+  def self.connect_with(email, api_key, adapter = :curb)
+    Rubyflare::Connect.new(email, api_key, adapter)
   end
 end
