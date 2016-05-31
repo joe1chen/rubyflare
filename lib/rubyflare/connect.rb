@@ -1,16 +1,23 @@
-require 'faraday'
-
 module Rubyflare
   class Connect
 
     attr_reader :response
-    attr_accessor :adapter
+    attr_reader :adapter
 
     API_URL = "https://api.cloudflare.com/client/v4/"
 
     def initialize(email, api_key, adapter = :curb)
       @email = email
       @api_key = api_key
+
+      case adapter
+        when :curb
+          require 'curb'
+        when :faraday
+          require 'faraday'
+        else
+          raise ArgumentError, ":#{adapter} is not a valid HTTP client"
+      end
 
       @adapter = adapter
     end
