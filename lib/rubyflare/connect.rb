@@ -1,3 +1,5 @@
+require 'faraday'
+
 module Rubyflare
   class Connect
 
@@ -34,8 +36,8 @@ module Rubyflare
             conn = Faraday.new(url: API_URL)
           end
 
-          response = conn.send(method_name, (method_name == :get ? options : nil)) do |req|
-            setup_request(method_name, req, options)
+          response = conn.send(method_name, API_URL + endpoint, options) do |req|
+            setup_request(req)
           end
 
           return response.body
@@ -49,16 +51,14 @@ module Rubyflare
       end
     end
 
-    def setup_request(method_name, req, options = nil)
-      req.url endpoint                    # Full url is API_URL + endpoint
+    def setup_request(req)
       req.headers['X-Auth-Email'] = @email
       req.headers['X-Auth-Key'] = @api_key
       req.headers['Content-Type'] = 'application/json'
       req.options.timeout = 15            # open/read timeout in seconds
       req.options.open_timeout = 10       # connection open timeout in seconds
-
-      if method_name != :get && options && !options.empty?
-        req.body = options
+      if req.body && req.body.is_a?(Hash) # Convert options hash to json
+        req.body = req.body.to_json
       end
     end
 
