@@ -44,7 +44,20 @@ module Rubyflare
           end
 
           response = conn.send(method_name, API_URL + endpoint, options) do |req|
-            setup_request(req)
+            req.headers['X-Auth-Email'] = @email
+            req.headers['X-Auth-Key'] = @api_key
+            req.headers['Content-Type'] = 'application/json'
+
+            req.options.timeout = 15            # open/read timeout in seconds
+            req.options.open_timeout = 10       # connection open timeout in seconds
+
+            if options
+              if options.is_a?(Hash)
+                req.body = options.to_json
+              elsif options.is_a?(String)
+                req.body = options
+              end
+            end
           end
 
           return response.body
@@ -58,16 +71,6 @@ module Rubyflare
       end
     end
 
-    def setup_request(req)
-      req.headers['X-Auth-Email'] = @email
-      req.headers['X-Auth-Key'] = @api_key
-      req.headers['Content-Type'] = 'application/json'
-      req.options.timeout = 15            # open/read timeout in seconds
-      req.options.open_timeout = 10       # connection open timeout in seconds
-      if req.body && req.body.is_a?(Hash) # Convert options hash to json
-        req.body = req.body.to_json
-      end
-    end
 
   end
 end
