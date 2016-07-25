@@ -1,5 +1,5 @@
 describe 'integration' do
-  describe Rubyflare, :vcr, order: :defined do
+  describe Rubyflare, order: :defined do
     # Given I have valid Cloudflare credentials
     # When I create a Rubyflare instance
     # And get my Cloudflare user details
@@ -22,7 +22,7 @@ describe 'integration' do
         context 'and update(PATCH) my user details' do
 
           it 'should return a valid response' do
-            response = connection.patch('user', { first_name: 'Trevor' })
+            response = connection.patch('user', { first_name: ENV['RUBYFLARE_TEST_FIRST_NAME'] || 'Trevor' })
             expect(response).to be_successful
           end
         end
@@ -30,7 +30,7 @@ describe 'integration' do
         context 'and create(POST) a new zone' do
 
           it 'should return a valid response' do
-            response = connection.post('zones', { name: 'supercooldomain.com' })
+            response = connection.post('zones', { name: ENV['RUBYFLARE_TEST_DOMAIN'] || 'supercooldomain.com' })
             expect(response).to be_successful
           end
         end
@@ -38,7 +38,7 @@ describe 'integration' do
         context 'and remove(DELETE) a zone' do
 
           it 'should return a valid response' do
-            domain_zone = connection.get('zones', { name: 'supercooldomain.com' })
+            domain_zone = connection.get('zones', { name: ENV['RUBYFLARE_TEST_DOMAIN'] || 'supercooldomain.com' })
             response = connection.delete("zones/#{domain_zone.result[:id]}")
             expect(response).to be_successful
           end

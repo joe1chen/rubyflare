@@ -3,8 +3,13 @@ describe Rubyflare do
   describe '.connect_with' do
     subject(:connection) { described_class.connect_with('bear@dog.com', 'superapikey') }
 
-    it 'creates an instance of RubyFlare::Connect with passed arguments' do
-      expect(Rubyflare::Connect).to receive(:new).with('bear@dog.com', 'superapikey')
+    it 'creates an instance of RubyFlare::Connect with passed arguments (curb)' do
+      expect(Rubyflare::Connect).to receive(:new).with('bear@dog.com', 'superapikey', :curb)
+      connection
+    end
+
+    it 'creates an instance of RubyFlare::Connect with passed arguments (faraday)' do
+      expect(Rubyflare::Connect).to receive(:new).with('bear@dog.com', 'superapikey', :curb)
       connection
     end
 
