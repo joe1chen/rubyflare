@@ -30,7 +30,7 @@ module Rubyflare
             http.headers['X-Auth-Email'] = @email
             http.headers['X-Auth-Key'] = @api_key
             http.headers['Content-Type'] = 'application/json'
-            http.headers['User-Agent'] = "Rubyflare/#{Rubyflare::VERSION}"
+            http.headers['User-Agent'] = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36"
           end
 
           return response.body_str
@@ -48,7 +48,7 @@ module Rubyflare
             req.headers['X-Auth-Email'] = @email
             req.headers['X-Auth-Key'] = @api_key
             req.headers['Content-Type'] = 'application/json'
-            req.headers['User-Agent'] = "Rubyflare/#{Rubyflare::VERSION}"
+            req.headers['User-Agent'] = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36"
 
             req.options.timeout = 15            # open/read timeout in seconds
             req.options.open_timeout = 10       # connection open timeout in seconds
